@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG Drawing Tool</title>
+  <style>
+    body {font-family: Arial, sans-serif; padding: 20px;}
+    .container {border: 1px solid #333; padding: 10px;}
+    svg {border: 1px solid #666; background: #f9f9f9;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h3>SVG Drawing Tool</h3>
+    <svg id="drawingArea" width="500" height="300"></svg>
+  </div>
+
+  <script>
+    const svg = document.getElementById('drawingArea');
+    let drawing = false, path;
+
+    svg.addEventListener('mousedown', e => {
+      drawing = true;
+      const x = e.offsetX, y = e.offsetY;
+      path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("stroke", "blue");
+      path.setAttribute("fill", "none");
+      path.setAttribute("stroke-width", "2");
+      path.setAttribute("d", `M ${x} ${y}`);
+      svg.appendChild(path);
+    });
+
+    svg.addEventListener('mousemove', e => {
+      if (!drawing) return;
+      const d = path.getAttribute("d");
+      path.setAttribute("d", `${d} L ${e.offsetX} ${e.offsetY}`);
+    });
+
+    svg.addEventListener('mouseup', () => drawing = false);
+    svg.addEventListener('mouseleave', () => drawing = false);
+  </script>
+</body>
+</html>
